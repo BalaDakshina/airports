@@ -21,14 +21,14 @@ class AirPortDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val state: StateFlow<AirportDetail?> by lazy {
+    val state: StateFlow<AirportDetail> by lazy {
         airPortDetailsUseCase(savedStateHandle.toRoute<Screens.AirportDetails>().id)
             .map { it }
             .catch { Throwable("Error") }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = null
+                initialValue = AirportDetail()
             )
     }
 }

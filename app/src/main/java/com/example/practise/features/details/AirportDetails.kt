@@ -20,9 +20,9 @@ fun AirportDetailsScreen(viewModel: AirPortDetailsViewModel = hiltViewModel()) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = "Airport Details", modifier = Modifier.fillMaxWidth())
         HorizontalDivider(modifier = Modifier.padding(4.dp))
-        Text(text = "Country : ${state?.country ?: "Loading..."}")
-        Text(text = "City : ${state?.city ?: "Loading..."}")
-        Text(text = "TimeZone : ${state?.timeZone ?: "Loading..."}")
+        Text(text = "Country : ${state.country}")
+        Text(text = "City : ${state.city}")
+        Text(text = "TimeZone : ${state.timeZone}")
         HorizontalDivider(modifier = Modifier.padding(4.dp))
     }
 }

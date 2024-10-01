@@ -14,7 +14,7 @@ class AirPortListRepositoryImpl @Inject constructor(
             return response.body()?.data?.map {
                 AirPort(
                     name = it.attributes.name,
-                    id = it.id
+                    id = it.id.orEmpty()
                 )
             } ?: emptyList()
         } else {

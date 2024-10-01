@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.example.practise.features.details.AirportDetailsScreen
 import com.example.practise.features.list.AirportListScreen
 import com.example.practise.navigation.Screens.AirportDetails
@@ -40,12 +39,7 @@ class MainActivity : ComponentActivity() {
 fun AirportsApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(modifier = modifier, navController = navController, startDestination = AirportList) {
-
         composable<AirportList> { AirportListScreen(navigator = navController) }
-
-        composable<AirportDetails> { backStack ->
-            val id = backStack.toRoute<AirportDetails>().id
-            AirportDetailsScreen(id)
-        }
+        composable<AirportDetails> { AirportDetailsScreen() }
     }
 }

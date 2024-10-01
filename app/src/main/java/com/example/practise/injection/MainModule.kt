@@ -1,7 +1,9 @@
 package com.example.practise.injection
 
+import com.example.practise.data.AirPortDetailsRepositoryImpl
 import com.example.practise.data.AirPortListRepositoryImpl
 import com.example.practise.data.AirPortsService
+import com.example.practise.domain.AirPortDetailsRepository
 import com.example.practise.domain.AirPortListRepository
 import dagger.Module
 import dagger.Provides
@@ -25,5 +27,11 @@ class MainModule {
     @ViewModelScoped
     fun provideAirPortListRepository(airPortsService: AirPortsService): AirPortListRepository {
         return AirPortListRepositoryImpl(airPortsService)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAirPortDetailsRepository(airPortsService: AirPortsService): AirPortDetailsRepository {
+        return AirPortDetailsRepositoryImpl(airPortsService)
     }
 }

@@ -21,7 +21,7 @@ class NetworkModule {
     @Provides
     fun provideRetrofit(okhttp: OkHttpClient): Retrofit {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://google.com")
+            .baseUrl("https://airportgap.com/api/")
             .client(okhttp)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

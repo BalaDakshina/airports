@@ -1,4 +1,4 @@
-package com.example.airports.ui.theme
+package com.example.airports.ui
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

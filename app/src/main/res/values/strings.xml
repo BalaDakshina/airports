@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">airports</string>
     <string name="couldn_t_load_data">Couldn\'t load data</string>
+    <string name="country">Country : %1$s</string>
+    <string name="city">City : %1$s</string>
+    <string name="timezone">TimeZone : %1$s</string>
+    <string name="airport_details">Airport Details</string>
 </resources>

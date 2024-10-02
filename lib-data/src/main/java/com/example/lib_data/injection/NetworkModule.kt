@@ -25,7 +25,7 @@ class NetworkModule {
     @Singleton
     fun provideRetrofit(okhttp: OkHttpClient): Retrofit {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://airportgap.com/api/")
+            .baseUrl(BASE_URL)
             .client(okhttp)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -36,5 +36,9 @@ class NetworkModule {
     @Singleton
     fun provideAirPortsService(retrofit: Retrofit): AirPortsService {
         return retrofit.create<AirPortsService>()
+    }
+
+    companion object {
+        private const val BASE_URL = "https://airportgap.com/api/"
     }
 }

@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.airports.features.details.view.AirportDetailsScreen
-import com.example.airports.features.list.view.AirportListScreen
+import com.example.airports.features.details.view.AirPortDetailsScreen
+import com.example.airports.features.list.view.AirPortListScreen
 import com.example.airports.navigation.Screens.AirportDetails
 import com.example.airports.navigation.Screens.AirportList
-import com.example.airports.ui.theme.AirportsTheme
+import com.example.airports.ui.AirportsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AirportsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AirportsApp(modifier = Modifier.padding(innerPadding))
+                    AirPortsApp(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -36,10 +36,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AirportsApp(modifier: Modifier = Modifier) {
+fun AirPortsApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(modifier = modifier, navController = navController, startDestination = AirportList) {
-        composable<AirportList> { AirportListScreen(navigator = navController) }
-        composable<AirportDetails> { AirportDetailsScreen() }
+        composable<AirportList> { AirPortListScreen(navController = navController) }
+        composable<AirportDetails> { AirPortDetailsScreen() }
     }
 }

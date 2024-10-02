@@ -1,6 +1,6 @@
 package com.example.lib_domain.model
 
-data class AirportDetail(
+data class AirPortDetail(
     val id: String = "",
     val country: String = "",
     val city: String = "",

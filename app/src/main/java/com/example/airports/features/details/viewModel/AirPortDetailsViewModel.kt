@@ -8,7 +8,7 @@ import com.example.airports.navigation.Screens
 import com.example.lib_domain.ResultType
 import com.example.lib_domain.ResultType.Error
 import com.example.lib_domain.ResultType.Success
-import com.example.lib_domain.model.AirportDetail
+import com.example.lib_domain.model.AirPortDetail
 import com.example.lib_domain.usecases.AirPortDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,7 +35,7 @@ class AirPortDetailsViewModel @Inject constructor(
             )
     }
 
-    private fun mapResult(result: ResultType<AirportDetail>) =
+    private fun mapResult(result: ResultType<AirPortDetail>) =
         when (result) {
             is Success -> AirPortDetailsUiState.Success(result.data)
             is Error -> AirPortDetailsUiState.Error

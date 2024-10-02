@@ -10,9 +10,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -20,26 +20,42 @@ import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
 import com.example.airports.features.list.viewmodel.AirPortListUiState
 import com.example.airports.features.list.viewmodel.AirPortsListViewModel
-import com.example.airports.navigation.Screens.AirportDetails
+import com.example.airports.features.list.viewmodel.UserEvent
+import com.example.airports.features.list.viewmodel.UserIntent
+import com.example.airports.ui.Dimensions
 import com.example.lib_domain.model.AirPort
 
 @Composable
-fun AirportListScreen(
+fun AirPortListScreen(
     viewModel: AirPortsListViewModel = hiltViewModel(),
-    navigator: NavController
+    navController: NavController
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.userIntent.collect { userIntent ->
+            when (userIntent) {
+                is UserIntent.NavigateToDetail -> {
+                    navController.navigate(userIntent.screen)
+                }
+            }
+        }
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
-    AirPortsContent(state, navigator)
+
+    AirPortsContent(
+        state = state,
+        onAirportClick = viewModel::reduce
+    )
 }
 
 @Composable
 private fun AirPortsContent(
     state: AirPortListUiState,
-    navigator: NavController
+    onAirportClick: (UserEvent) -> Unit
 ) {
     when (state) {
         is AirPortListUiState.Loading -> LoadingScreen()
-        is AirPortListUiState.Success -> AirPortList(state.data, navigator = navigator)
+        is AirPortListUiState.Success -> AirPortList(state.data, onAirportClick)
         is AirPortListUiState.Error -> ErrorScreen()
     }
 }
@@ -47,27 +63,29 @@ private fun AirPortsContent(
 @Composable
 private fun AirPortList(
     airports: List<AirPort>,
-    navigator: NavController
+    onAirportClick: (UserEvent) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(Dimensions.mediumPadding)
     ) {
         items(airports) {
             Row(modifier = Modifier
-                .padding(8.dp)
+                .padding(Dimensions.smallPadding)
                 .fillMaxSize()
                 .clickable {
-                    navigator.navigate(AirportDetails(it.id))
+                    onAirportClick(UserEvent.OnAirportSelected(it.id))
                 }) {
                 Text(
-                    text = it.name, modifier = Modifier
-                        .padding(start = 8.dp)
+                    text = it.name,
+                    modifier = Modifier
+                        .padding(start = Dimensions.smallPadding)
                         .weight(1f)
                 )
                 Text(
-                    text = it.id, modifier = Modifier
-                        .padding(start = 8.dp)
+                    text = it.id,
+                    modifier = Modifier
+                        .padding(start = Dimensions.smallPadding)
                 )
             }
             HorizontalDivider()

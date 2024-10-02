@@ -2,10 +2,10 @@ package com.example.airports.navigation
 
 import kotlinx.serialization.Serializable
 
-class Screens {
+sealed class Screens {
     @Serializable
-    data object AirportList
+    data object AirportList : Screens()
 
     @Serializable
-    data class AirportDetails(val id: String)
+    data class AirportDetails(val id: String) : Screens()
 }

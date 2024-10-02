@@ -8,7 +8,7 @@ import javax.inject.Inject
 class AirPortListUseCase @Inject constructor(
     private val airPortListRepository: AirPortListRepository
 ) {
-    operator fun invoke(): Flow<List<AirPort>> = flow {
+    operator fun invoke(): Flow<ResultType<List<AirPort>>> = flow {
         emit(airPortListRepository.getUiData())
     }
 }

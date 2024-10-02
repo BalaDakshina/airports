@@ -1,25 +1,25 @@
 package com.example.airports.data
 
-import android.util.Log
 import com.example.airports.data.model.AirPort
+import com.example.airports.data.model.AirportsResponse
 import com.example.airports.domain.AirPortListRepository
+import com.example.airports.domain.ResultType
+import com.example.airports.domain.asResult
+import com.example.airports.domain.safeApiCall
 import javax.inject.Inject
 
 class AirPortListRepositoryImpl @Inject constructor(
     private val airPortsService: AirPortsService
 ) : AirPortListRepository {
-    override suspend fun getUiData(): List<AirPort> {
-        val response = airPortsService.getData()
-        if (response.isSuccessful) {
-            return response.body()?.data?.map {
+    override suspend fun getUiData(): ResultType<List<AirPort>> {
+        val response: ResultType<AirportsResponse> = safeApiCall { airPortsService.getData() }
+        return response.asResult { result ->
+            result.data.map {
                 AirPort(
                     name = it.attributes.name,
                     id = it.id.orEmpty()
                 )
-            } ?: emptyList()
-        } else {
-            Log.d("TAGFPM", "getUiData: ${response.errorBody()}")
-            return listOf(AirPort("call failed", "0"))
+            }
         }
     }
 }

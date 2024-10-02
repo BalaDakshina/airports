@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.airports.features.details.AirportDetailsScreen
-import com.example.airports.features.list.AirportListScreen
+import com.example.airports.features.details.view.AirportDetailsScreen
+import com.example.airports.features.list.view.AirportListScreen
 import com.example.airports.navigation.Screens.AirportDetails
 import com.example.airports.navigation.Screens.AirportList
 import com.example.airports.ui.theme.AirportsTheme

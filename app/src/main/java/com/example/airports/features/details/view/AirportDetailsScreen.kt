@@ -13,9 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
-import com.example.airports.data.model.AirportDetail
 import com.example.airports.features.details.viewModel.AirPortDetailsUiState
 import com.example.airports.features.details.viewModel.AirPortDetailsViewModel
+import com.example.lib_domain.model.AirportDetail
 
 @Composable
 fun AirportDetailsScreen(viewModel: AirPortDetailsViewModel = hiltViewModel()) {

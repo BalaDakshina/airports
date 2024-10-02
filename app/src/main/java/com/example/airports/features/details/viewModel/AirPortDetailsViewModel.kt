@@ -4,10 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.airports.data.model.AirportDetail
-import com.example.airports.domain.AirPortDetailsUseCase
-import com.example.airports.domain.ResultType
 import com.example.airports.navigation.Screens
+import com.example.lib_domain.ResultType
+import com.example.lib_domain.ResultType.Error
+import com.example.lib_domain.ResultType.Success
+import com.example.lib_domain.model.AirportDetail
+import com.example.lib_domain.usecases.AirPortDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +37,7 @@ class AirPortDetailsViewModel @Inject constructor(
 
     private fun mapResult(result: ResultType<AirportDetail>) =
         when (result) {
-            is ResultType.Success -> AirPortDetailsUiState.Success(result.data)
-            is ResultType.Error -> AirPortDetailsUiState.Error
+            is Success -> AirPortDetailsUiState.Success(result.data)
+            is Error -> AirPortDetailsUiState.Error
         }
 }

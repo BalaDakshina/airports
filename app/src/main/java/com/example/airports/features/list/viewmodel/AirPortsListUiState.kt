@@ -1,6 +1,6 @@
 package com.example.airports.features.list.viewmodel
 
-import com.example.airports.data.model.AirPort
+import com.example.lib_domain.model.AirPort
 
 sealed class AirPortListUiState {
     data object Loading : AirPortListUiState()

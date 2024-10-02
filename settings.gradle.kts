@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "airports"
 include(":app")
- 
+include(":lib-data")
+include(":lib-domain")

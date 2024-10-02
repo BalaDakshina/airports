@@ -2,9 +2,9 @@ package com.example.airports.features.list.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.airports.data.model.AirPort
-import com.example.airports.domain.AirPortListUseCase
-import com.example.airports.domain.ResultType
+import com.example.lib_domain.ResultType
+import com.example.lib_domain.model.AirPort
+import com.example.lib_domain.usecases.AirPortListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

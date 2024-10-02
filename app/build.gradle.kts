@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.ksp.plugin)
     alias(libs.plugins.hilt.plugin)
     alias(libs.plugins.compose.compiler.plugin)
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.0"
 }
 
 android {
@@ -72,11 +72,13 @@ dependencies {
     implementation(libs.kotlin.serialisation)
     implementation(libs.hilt.navigation)
 
+    implementation(project(":lib-data"))
+    implementation(project(":lib-domain"))
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

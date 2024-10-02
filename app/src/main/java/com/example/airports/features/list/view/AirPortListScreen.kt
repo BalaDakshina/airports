@@ -18,10 +18,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
-import com.example.airports.data.model.AirPort
 import com.example.airports.features.list.viewmodel.AirPortListUiState
 import com.example.airports.features.list.viewmodel.AirPortsListViewModel
 import com.example.airports.navigation.Screens.AirportDetails
+import com.example.lib_domain.model.AirPort
 
 @Composable
 fun AirportListScreen(

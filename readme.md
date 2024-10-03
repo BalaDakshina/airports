@@ -20,6 +20,6 @@
 ### 2. AirPortDetailsScreen
 
 - **Description**: This screen shows detailed information about a selected airport.
-- **API Call**: When navigated to this screen, the app makes an API call to https://airportgap.com/api/airports/AUX to fetch the details of the selected airport.
+- **API Call**: When navigated to this screen, the app makes an API call to https://airportgap.com/api/airports/{id} to fetch the details of the selected airport.
 - **Screen**:
 ![img.png](img.png)

@@ -22,9 +22,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-private const val AIRPORT_ID = "1"
-private const val AIRPORT_NAME = "Airport 1"
-
 @OptIn(ExperimentalCoroutinesApi::class)
 class AirPortDetailsViewModelTest {
 
@@ -35,7 +32,6 @@ class AirPortDetailsViewModelTest {
     private val savedStateHandle = mockk<SavedStateHandle>()
 
     private lateinit var subject: AirPortDetailsViewModel
-
 
     @Before
     fun setUp() {
@@ -71,10 +67,16 @@ class AirPortDetailsViewModelTest {
 
     @Test
     fun `GIVEN use case returns error WHEN ViewModel is created THEN state is Error`() = runTest {
-        coEvery { mockAirPortDetailsUseCase(any()) } returns flowOf(ResultType.Error(Exception("Error")))
+        coEvery { mockAirPortDetailsUseCase(any()) } returns flowOf(ResultType.Error(Exception(ERROR)))
         subject.state.test {
             awaitItem()
             assertEquals(AirPortDetailsUiState.Error, awaitItem())
         }
+    }
+
+    companion object {
+        private const val AIRPORT_ID = "1"
+        private const val AIRPORT_NAME = "Airport 1"
+        private const val ERROR = "Error"
     }
 }

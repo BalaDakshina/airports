@@ -40,7 +40,7 @@ class AirPortsListViewModelTest {
     @Test
     fun `GIVEN use case returns success WHEN ViewModel is created THEN state is Success`() =
         runTest {
-            val airPorts = listOf(AirPort("1", "Airport 1"))
+            val airPorts = listOf(AirPort(AIRPORT_ID, AIRPORT_NAME))
             coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Success(airPorts))
             subject.state.test {
                 awaitItem()
@@ -50,7 +50,7 @@ class AirPortsListViewModelTest {
 
     @Test
     fun `GIVEN use case returns error WHEN ViewModel is created THEN state is Error`() = runTest {
-        coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Error(Exception("Error")))
+        coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Error(Exception(ERROR)))
         subject.state.test {
             awaitItem()
             assertEquals(AirPortListUiState.Error, awaitItem())
@@ -60,14 +60,20 @@ class AirPortsListViewModelTest {
     @Test
     fun `GIVEN userEvent is OnAirportSelected WHEN reduce is called THEN userIntent is NavigateToDetail`() {
         runTest {
-            val userEvent = ListScreenEvent.OnAirportSelected("1")
+            val userEvent = ListScreenEvent.OnAirportSelected(AIRPORT_ID)
             subject.userIntent.test {
                 subject.reduce(userEvent)
                 assertEquals(
-                    ListScreenIntent.NavigateToDetail(Screens.AirportDetails("1")),
+                    ListScreenIntent.NavigateToDetail(Screens.AirportDetails(AIRPORT_ID)),
                     awaitItem()
                 )
             }
         }
+    }
+
+    companion object {
+        private const val AIRPORT_ID = "1"
+        private const val AIRPORT_NAME = "Airport 1"
+        private const val ERROR = "Error"
     }
 }

@@ -15,8 +15,9 @@ class AirPortListRepositoryImpl @Inject constructor(
 ) : AirPortListRepository {
 
     override suspend fun getAirPortList(): ResultType<List<AirPort>> {
-        val response: ResultType<AirPortListResponse> =
-            safeApiCall { airPortsService.getAirportList() }
+        val response: ResultType<AirPortListResponse> = safeApiCall {
+            airPortsService.getAirportList()
+        }
         return airPortsMapper.map(response)
     }
 }

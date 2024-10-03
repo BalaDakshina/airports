@@ -13,9 +13,6 @@ import org.junit.Test
 import retrofit2.Response
 
 class SafeApiCallTest {
-    companion object {
-        private const val SUCCESS_DATA = "Success Data"
-    }
 
     private val mockApiCall = mockk<suspend () -> Response<String>>()
 
@@ -91,4 +88,8 @@ class SafeApiCallTest {
 
             assertTrue(result is ResultType.Error)
         }
+
+    companion object {
+        private const val SUCCESS_DATA = "Success Data"
+    }
 }

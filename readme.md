@@ -12,7 +12,7 @@
 ### 1. AirPortsListScreen
 
 - **Description**: This screen displays a list of airports.
-- **Data Source**: The airports list is fetched from the [Airport Gap API](https://airportgap.com/api/airports).
+- **Data Source**: The airports list is fetched from the https://airportgap.com/api/airports.
 - **User Interaction**: Tapping on an airport item in the list will navigate the user to the AirPortDetailsScreen.
 - **Screen**:
 ![img_1.png](img_1.png)
@@ -20,6 +20,6 @@
 ### 2. AirPortDetailsScreen
 
 - **Description**: This screen shows detailed information about a selected airport.
-- **API Call**: When navigated to this screen, the app makes an API call to [Airport Gap API](https://airportgap.com/api/airports/AUX) to fetch the details of the selected airport.
+- **API Call**: When navigated to this screen, the app makes an API call to https://airportgap.com/api/airports/AUX to fetch the details of the selected airport.
 - **Screen**:
 ![img.png](img.png)

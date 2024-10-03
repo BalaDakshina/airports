@@ -9,10 +9,10 @@ sealed class AirPortListUiState {
     data object Error : AirPortListUiState()
 }
 
-sealed class UserIntent {
-    data class NavigateToDetail(val screen: Screens) : UserIntent()
+sealed class ListScreenIntent {
+    data class NavigateToDetail(val screen: Screens) : ListScreenIntent()
 }
 
-sealed class UserEvent {
-    data class OnAirportSelected(val airportId: String) : UserEvent()
+sealed class ListScreenEvent {
+    data class OnAirportSelected(val airportId: String) : ListScreenEvent()
 }

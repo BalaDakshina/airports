@@ -20,8 +20,8 @@ import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
 import com.example.airports.features.list.viewmodel.AirPortListUiState
 import com.example.airports.features.list.viewmodel.AirPortsListViewModel
-import com.example.airports.features.list.viewmodel.UserEvent
-import com.example.airports.features.list.viewmodel.UserIntent
+import com.example.airports.features.list.viewmodel.ListScreenEvent
+import com.example.airports.features.list.viewmodel.ListScreenIntent
 import com.example.airports.ui.Dimensions
 import com.example.lib_domain.model.AirPort
 
@@ -33,7 +33,7 @@ fun AirPortListScreen(
     LaunchedEffect(Unit) {
         viewModel.userIntent.collect { userIntent ->
             when (userIntent) {
-                is UserIntent.NavigateToDetail -> {
+                is ListScreenIntent.NavigateToDetail -> {
                     navController.navigate(userIntent.screen)
                 }
             }
@@ -51,7 +51,7 @@ fun AirPortListScreen(
 @Composable
 private fun AirPortsContent(
     state: AirPortListUiState,
-    onAirportClick: (UserEvent) -> Unit
+    onAirportClick: (ListScreenEvent) -> Unit
 ) {
     when (state) {
         is AirPortListUiState.Loading -> LoadingScreen()
@@ -63,7 +63,7 @@ private fun AirPortsContent(
 @Composable
 private fun AirPortList(
     airports: List<AirPort>,
-    onAirportClick: (UserEvent) -> Unit
+    onAirportClick: (ListScreenEvent) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -74,7 +74,7 @@ private fun AirPortList(
                 .padding(Dimensions.smallPadding)
                 .fillMaxSize()
                 .clickable {
-                    onAirportClick(UserEvent.OnAirportSelected(it.id))
+                    onAirportClick(ListScreenEvent.OnAirportSelected(it.id))
                 }) {
                 Text(
                     text = it.name,

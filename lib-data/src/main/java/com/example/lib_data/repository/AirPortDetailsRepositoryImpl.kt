@@ -1,9 +1,9 @@
 package com.example.lib_data.repository
 
 import com.example.lib_data.mapper.AirPortDetailsMapper
+import com.example.lib_data.model.AirPortDetailsResponse
 import com.example.lib_data.services.AirPortsService
 import com.example.lib_domain.ResultType
-import com.example.lib_domain.asResult
 import com.example.lib_domain.model.AirPortDetail
 import com.example.lib_domain.repository.AirPortDetailsRepository
 import com.example.lib_domain.safeApiCall
@@ -15,9 +15,7 @@ class AirPortDetailsRepositoryImpl @Inject constructor(
 ) : AirPortDetailsRepository {
 
     override suspend fun getAirportDetails(id: String): ResultType<AirPortDetail> {
-        val response = safeApiCall { airPortsService.getAirportDetails(id) }
-        return response.asResult {
-            airPortDetailsMapper.map(it)
-        }
+        val response: ResultType<AirPortDetailsResponse> = safeApiCall { airPortsService.getAirportDetails(id) }
+        return airPortDetailsMapper.map(response)
     }
 }

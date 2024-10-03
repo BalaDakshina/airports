@@ -11,6 +11,6 @@ class AirPortListUseCase @Inject constructor(
     private val airPortListRepository: AirPortListRepository
 ) {
     operator fun invoke(): Flow<ResultType<List<AirPort>>> = flow {
-        emit(airPortListRepository.getUiData())
+        emit(airPortListRepository.getAirPortList())
     }
 }

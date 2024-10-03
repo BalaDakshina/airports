@@ -7,7 +7,7 @@ import com.example.lib_domain.model.AirPort
 import javax.inject.Inject
 
 class AirPortListMapper @Inject constructor() {
-    fun map(response: ResultType<AirPortListResponse>) =
+    fun map(response: ResultType<AirPortListResponse>): ResultType<List<AirPort>> =
         response.asResult { result ->
             result.data.map {
                 AirPort(

@@ -21,7 +21,7 @@ class AirPortsListViewModel @Inject constructor(
     private val airPortListUseCase: AirPortListUseCase
 ) : ViewModel() {
 
-    private val _userIntent = Channel<UserIntent>()
+    private val _userIntent = Channel<ListScreenIntent>()
     val userIntent = _userIntent.receiveAsFlow()
 
     val state: StateFlow<AirPortListUiState> by lazy {
@@ -41,10 +41,10 @@ class AirPortsListViewModel @Inject constructor(
             is ResultType.Error -> AirPortListUiState.Error
         }
 
-    fun reduce(userEvent: UserEvent) {
+    fun reduce(userEvent: ListScreenEvent) {
         when (userEvent) {
-            is UserEvent.OnAirportSelected -> {
-                _userIntent.trySend(UserIntent.NavigateToDetail(Screens.AirportDetails(userEvent.airportId)))
+            is ListScreenEvent.OnAirportSelected -> {
+                _userIntent.trySend(ListScreenIntent.NavigateToDetail(Screens.AirportDetails(userEvent.airportId)))
             }
         }
     }

@@ -29,7 +29,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -39,9 +39,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson.convertor)
 
-
     implementation(project(":lib-domain"))
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutine.test)
 }

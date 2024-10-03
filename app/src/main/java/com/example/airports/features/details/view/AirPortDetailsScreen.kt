@@ -9,6 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.airports.R
@@ -16,6 +19,7 @@ import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
 import com.example.airports.features.details.viewModel.AirPortDetailsUiState
 import com.example.airports.features.details.viewModel.AirPortDetailsViewModel
+import com.example.airports.ui.AirportsTheme
 import com.example.airports.ui.Dimensions.fontSizeMedium
 import com.example.airports.ui.Dimensions.mediumPadding
 import com.example.lib_domain.model.AirPortDetail
@@ -49,5 +53,25 @@ private fun AirPortDetail(airportDetail: AirPortDetail) {
         Text(text = stringResource(R.string.city, airportDetail.city))
         Text(text = stringResource(R.string.timezone, airportDetail.timeZone))
         HorizontalDivider(modifier = Modifier.padding(mediumPadding))
+    }
+}
+
+class AirPortDetailsPreviewParameterProvider : PreviewParameterProvider<AirPortDetailsUiState> {
+    override val values: Sequence<AirPortDetailsUiState> = sequenceOf(
+        AirPortDetailsUiState.Loading,
+        AirPortDetailsUiState.Success(
+            AirPortDetail(id = "1", country = "UK", city = "London", timeZone = "GMT")
+        ),
+        AirPortDetailsUiState.Error
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAirPortListScreen(
+    @PreviewParameter(AirPortDetailsPreviewParameterProvider::class) airPortDetailsUiState: AirPortDetailsUiState
+) {
+    AirportsTheme {
+        AirPortDetailContent(state = airPortDetailsUiState)
     }
 }

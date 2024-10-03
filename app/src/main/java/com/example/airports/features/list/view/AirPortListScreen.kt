@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -22,6 +25,7 @@ import com.example.airports.features.list.viewmodel.AirPortListUiState
 import com.example.airports.features.list.viewmodel.AirPortsListViewModel
 import com.example.airports.features.list.viewmodel.ListScreenEvent
 import com.example.airports.features.list.viewmodel.ListScreenIntent
+import com.example.airports.ui.AirportsTheme
 import com.example.airports.ui.Dimensions
 import com.example.lib_domain.model.AirPort
 
@@ -90,5 +94,28 @@ private fun AirPortList(
             }
             HorizontalDivider()
         }
+    }
+}
+
+class AirPortListPreviewParameterProvider : PreviewParameterProvider<AirPortListUiState> {
+    override val values: Sequence<AirPortListUiState> = sequenceOf(
+        AirPortListUiState.Loading,
+        AirPortListUiState.Success(
+            listOf(
+                AirPort(id = "1", name = "Airport 1"),
+                AirPort(id = "2", name = "Airport 2")
+            )
+        ),
+        AirPortListUiState.Error
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAirPortListScreen(
+    @PreviewParameter(AirPortListPreviewParameterProvider::class) airPortListUiState: AirPortListUiState
+) {
+    AirportsTheme {
+        AirPortsContent(state = airPortListUiState, {})
     }
 }

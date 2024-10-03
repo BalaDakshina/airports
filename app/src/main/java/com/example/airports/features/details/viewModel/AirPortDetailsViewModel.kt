@@ -23,6 +23,7 @@ class AirPortDetailsViewModel @Inject constructor(
     private val airPortDetailsUseCase: AirPortDetailsUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     val state: StateFlow<AirPortDetailsUiState> by lazy {
         val airPortId = savedStateHandle.toRoute<Screens.AirportDetails>().id
         airPortDetailsUseCase(airPortId)

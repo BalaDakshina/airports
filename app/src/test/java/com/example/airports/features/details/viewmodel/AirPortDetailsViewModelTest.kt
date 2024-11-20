@@ -5,6 +5,7 @@ import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.example.airports.features.details.viewModel.AirPortDetailsUiState
 import com.example.airports.features.details.viewModel.AirPortDetailsViewModel
+import com.example.airports.features.details.viewModel.DetailsScreenEvent
 import com.example.airports.navigation.Screens
 import com.example.airports.rule.MainDispatcherRule
 import com.example.lib_domain.ResultType
@@ -14,15 +15,12 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AirPortDetailsViewModelTest {
 
     @get: Rule
@@ -44,9 +42,8 @@ class AirPortDetailsViewModelTest {
 
     @Test
     fun `GIVEN initial state WHEN ViewModel is created THEN state is Loading`() = runTest {
-        coEvery { mockAirPortDetailsUseCase(any()) } returns flowOf(
-            ResultType.Success(AirPortDetail(AIRPORT_ID, AIRPORT_NAME))
-        )
+        coEvery { mockAirPortDetailsUseCase(any()) } returns
+                ResultType.Success(AirPortDetail(AIRPORT_ID, AIRPORT_NAME))
         subject.state.test {
             assertEquals(AirPortDetailsUiState.Loading, awaitItem())
         }
@@ -56,9 +53,9 @@ class AirPortDetailsViewModelTest {
     fun `GIVEN use case returns success WHEN ViewModel is created THEN state is Success`() =
         runTest {
             val airPortDetail = AirPortDetail(AIRPORT_ID, AIRPORT_NAME)
-            coEvery { mockAirPortDetailsUseCase(any()) } returns flowOf(
-                ResultType.Success(airPortDetail)
-            )
+            coEvery { mockAirPortDetailsUseCase(any()) } returns ResultType.Success(airPortDetail)
+
+            subject.reduce(DetailsScreenEvent.OnInitialLoad)
             subject.state.test {
                 awaitItem()
                 assertEquals(AirPortDetailsUiState.Success(airPortDetail), awaitItem())
@@ -67,7 +64,9 @@ class AirPortDetailsViewModelTest {
 
     @Test
     fun `GIVEN use case returns error WHEN ViewModel is created THEN state is Error`() = runTest {
-        coEvery { mockAirPortDetailsUseCase(any()) } returns flowOf(ResultType.Error(Exception(ERROR)))
+        coEvery { mockAirPortDetailsUseCase(any()) } returns ResultType.Error(Exception(ERROR))
+
+        subject.reduce(DetailsScreenEvent.OnInitialLoad)
         subject.state.test {
             awaitItem()
             assertEquals(AirPortDetailsUiState.Error, awaitItem())

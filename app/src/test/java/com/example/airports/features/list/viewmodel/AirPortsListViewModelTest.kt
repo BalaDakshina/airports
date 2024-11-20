@@ -8,7 +8,6 @@ import com.example.lib_domain.model.AirPort
 import com.example.lib_domain.usecases.AirPortListUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +28,7 @@ class AirPortsListViewModelTest {
 
     @Test
     fun `GIVEN initial state WHEN ViewModel is created THEN state is Loading`() = runTest {
-        coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Success(emptyList()))
+        coEvery { mockAirPortListUseCase() } returns ResultType.Success(emptyList())
         val userEvent = ListScreenEvent.OnInitialLoad
 
         subject.reduce(userEvent)
@@ -43,7 +42,7 @@ class AirPortsListViewModelTest {
         runTest {
             val airPorts = listOf(AirPort(AIRPORT_ID, AIRPORT_NAME))
             val userEvent = ListScreenEvent.OnInitialLoad
-            coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Success(airPorts))
+            coEvery { mockAirPortListUseCase() } returns ResultType.Success(airPorts)
 
             subject.reduce(userEvent)
             subject.state.test {
@@ -54,7 +53,7 @@ class AirPortsListViewModelTest {
 
     @Test
     fun `GIVEN use case returns error WHEN ViewModel is created THEN state is Error`() = runTest {
-        coEvery { mockAirPortListUseCase() } returns flowOf(ResultType.Error(Exception(ERROR)))
+        coEvery { mockAirPortListUseCase() } returns ResultType.Error(Exception(ERROR))
         val userEvent = ListScreenEvent.OnInitialLoad
 
         subject.reduce(userEvent)

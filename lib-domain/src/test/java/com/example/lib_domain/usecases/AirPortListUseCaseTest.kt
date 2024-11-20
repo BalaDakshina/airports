@@ -6,7 +6,6 @@ import com.example.lib_domain.repository.AirPortListRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -21,8 +20,7 @@ class AirPortListUseCaseTest {
             val airPortResult = ResultType.Success(emptyList<AirPort>())
             coEvery { mockRepository.getAirPortList() } returns airPortResult
 
-            subject.invoke().collectLatest {
-                assertEquals(airPortResult, it)
-            }
+            val result = subject.invoke()
+            assertEquals(airPortResult, result)
         }
 }

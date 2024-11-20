@@ -3,12 +3,14 @@ package com.example.lib_data.repository
 import com.example.lib_data.mapper.AirPortDetailsMapper
 import com.example.lib_data.model.AirPortDetailsResponse
 import com.example.lib_data.services.AirPortsService
+import com.example.lib_data.util.CoroutineDispatchersProvider
 import com.example.lib_domain.ResultType
 import com.example.lib_domain.model.AirPortDetail
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -18,7 +20,9 @@ class AirPortDetailsRepositoryImplTest {
 
     private val mockService = mockk<AirPortsService>()
     private val mockMapper = mockk<AirPortDetailsMapper>()
-    private val subject = AirPortDetailsRepositoryImpl(mockService, mockMapper)
+    private val dispatcher = mockk<CoroutineDispatchersProvider>()
+
+    private val subject = AirPortDetailsRepositoryImpl(mockService, mockMapper, dispatcher)
 
     @Test
     fun `GIVEN successful API call WHEN getAirPortDetails is called THEN details is returned`() =
@@ -29,6 +33,7 @@ class AirPortDetailsRepositoryImplTest {
             val mockDetails = mockk<AirPortDetail>()
             coEvery { mockService.getAirportDetails(AIRPORT_ID) } returns mockResponse
             every { mockMapper.map(mockResult) } returns ResultType.Success(mockDetails)
+            every { dispatcher.default } returns Dispatchers.Unconfined
 
             val result = subject.getAirportDetails(AIRPORT_ID)
 
@@ -47,6 +52,7 @@ class AirPortDetailsRepositoryImplTest {
 
             coEvery { mockService.getAirportDetails(AIRPORT_ID) } throws exception
             every { mockMapper.map(mockResult) } returns ResultType.Error(exception)
+            every { dispatcher.default } returns Dispatchers.Unconfined
 
             val result = subject.getAirportDetails(AIRPORT_ID)
 

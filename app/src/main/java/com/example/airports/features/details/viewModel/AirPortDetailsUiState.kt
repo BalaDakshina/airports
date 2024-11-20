@@ -7,3 +7,7 @@ sealed class AirPortDetailsUiState {
     data class Success(val data: AirPortDetail) : AirPortDetailsUiState()
     data object Error : AirPortDetailsUiState()
 }
+
+sealed class DetailsScreenEvent {
+    data object OnInitialLoad : DetailsScreenEvent()
+}

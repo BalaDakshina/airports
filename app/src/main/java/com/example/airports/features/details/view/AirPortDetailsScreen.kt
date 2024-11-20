@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +22,7 @@ import com.example.airports.composables.ErrorScreen
 import com.example.airports.composables.LoadingScreen
 import com.example.airports.features.details.viewModel.AirPortDetailsUiState
 import com.example.airports.features.details.viewModel.AirPortDetailsViewModel
+import com.example.airports.features.details.viewModel.DetailsScreenEvent
 import com.example.airports.ui.AirportsTheme
 import com.example.airports.ui.Dimensions.fontSizeMedium
 import com.example.airports.ui.Dimensions.mediumPadding
@@ -26,6 +30,14 @@ import com.example.lib_domain.model.AirPortDetail
 
 @Composable
 fun AirPortDetailsScreen(viewModel: AirPortDetailsViewModel = hiltViewModel()) {
+    val isInitialLoad = rememberSaveable { mutableStateOf(true) }
+    if (isInitialLoad.value) {
+        LaunchedEffect(Unit) {
+            viewModel.reduce(DetailsScreenEvent.OnInitialLoad)
+        }
+        isInitialLoad.value = false
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     AirPortDetailContent(state = state)
 }

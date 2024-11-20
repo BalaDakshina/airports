@@ -14,5 +14,6 @@ sealed class ListScreenIntent {
 }
 
 sealed class ListScreenEvent {
+    data object OnInitialLoad : ListScreenEvent()
     data class OnAirportSelected(val airportId: String) : ListScreenEvent()
 }

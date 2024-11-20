@@ -11,11 +11,9 @@ import com.example.lib_domain.ResultType.Success
 import com.example.lib_domain.model.AirPortDetail
 import com.example.lib_domain.usecases.AirPortDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,16 +22,21 @@ class AirPortDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val state: StateFlow<AirPortDetailsUiState> by lazy {
+    private val _state = MutableStateFlow<AirPortDetailsUiState>(AirPortDetailsUiState.Loading)
+    val state: StateFlow<AirPortDetailsUiState> = _state
+
+    fun reduce(intent: DetailsScreenEvent) {
+        when (intent) {
+            is DetailsScreenEvent.OnInitialLoad -> viewModelScope.launch {
+                getAirPortDetails()
+            }
+        }
+    }
+
+    private suspend fun getAirPortDetails() {
         val airPortId = savedStateHandle.toRoute<Screens.AirportDetails>().id
-        airPortDetailsUseCase(airPortId)
-            .map { mapResult(it) }
-            .catch { AirPortDetailsUiState.Error }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = AirPortDetailsUiState.Loading
-            )
+        val result = airPortDetailsUseCase(airPortId)
+        _state.value = mapResult(result)
     }
 
     private fun mapResult(result: ResultType<AirPortDetail>) =

@@ -4,6 +4,7 @@ import com.example.lib_domain.ResultType
 import com.example.lib_domain.asResult
 import com.example.lib_domain.safeApiCall
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
@@ -80,7 +81,10 @@ class SafeApiCallTest {
     @Test
     fun `GIVEN failed response WHEN toResult is called THEN Error is returned`() =
         runTest {
-            val mockResponseBody = mockk<ResponseBody>(relaxed = true)
+            val mockResponseBody = mockk<ResponseBody> {
+                every { contentType() } returns mockk()
+                every { contentLength() } returns 1
+            }
             val response: Response<String> = Response.error(404, mockResponseBody)
             coEvery { mockApiCall() } returns response
 

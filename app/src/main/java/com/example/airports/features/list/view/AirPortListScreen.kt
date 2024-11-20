@@ -35,11 +35,10 @@ fun AirPortListScreen(
     navController: NavController
 ) {
     LaunchedEffect(Unit) {
+        viewModel.reduce(ListScreenEvent.OnInitialLoad)
         viewModel.userIntent.collect { userIntent ->
             when (userIntent) {
-                is ListScreenIntent.NavigateToDetail -> {
-                    navController.navigate(userIntent.screen)
-                }
+                is ListScreenIntent.NavigateToDetail -> navController.navigate(userIntent.screen)
             }
         }
     }

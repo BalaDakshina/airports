@@ -8,12 +8,11 @@ import com.example.lib_domain.model.AirPort
 import com.example.lib_domain.usecases.AirPortListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,28 +23,27 @@ class AirPortsListViewModel @Inject constructor(
     private val _userIntent = Channel<ListScreenIntent>()
     val userIntent = _userIntent.receiveAsFlow()
 
-    val state: StateFlow<AirPortListUiState> by lazy {
-        airPortListUseCase()
-            .map { mapResult(it) }
-            .catch { emit(AirPortListUiState.Error) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = AirPortListUiState.Loading
-            )
+    private val _state = MutableStateFlow<AirPortListUiState>(AirPortListUiState.Loading)
+    val state: StateFlow<AirPortListUiState> = _state
+
+    fun reduce(userEvent: ListScreenEvent) {
+        when (userEvent) {
+            is ListScreenEvent.OnInitialLoad -> viewModelScope.launch { getAirPortDetails() }
+            is ListScreenEvent.OnAirportSelected -> {
+                _userIntent.trySend(
+                    ListScreenIntent.NavigateToDetail(Screens.AirportDetails(userEvent.airportId))
+                )
+            }
+        }
     }
+
+    private suspend fun getAirPortDetails() = airPortListUseCase()
+        .map { mapResult(it) }
+        .collect { _state.value = it }
 
     private fun mapResult(result: ResultType<List<AirPort>>) =
         when (result) {
             is ResultType.Success -> AirPortListUiState.Success(result.data)
             is ResultType.Error -> AirPortListUiState.Error
         }
-
-    fun reduce(userEvent: ListScreenEvent) {
-        when (userEvent) {
-            is ListScreenEvent.OnAirportSelected -> {
-                _userIntent.trySend(ListScreenIntent.NavigateToDetail(Screens.AirportDetails(userEvent.airportId)))
-            }
-        }
-    }
 }
